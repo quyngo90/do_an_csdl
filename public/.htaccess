@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Kiểm tra nếu không phải file hoặc thư mục thật thì chuyển hướng về index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển tất cả request về index.php xử lý
+RewriteRule ^(.*)$ index.php [QSA,L]
