@@ -1,14 +1,15 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 
-<h2>Quản lý Sản phẩm</h2>
-<a href="/admin/add-product" class="btn btn-success mb-3">Thêm sản phẩm</a>
+<h2>Quản lí sách</h2>
+<a href="/admin/add-product" class="btn btn-success mb-3">Thêm sách</a>
 
 <table class="table">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Tên sản phẩm</th>
-      <th>Giá (VNĐ)</th>
+      <th>Tên sách</th>
+      <th>Giá trị</th>
+      <th>Số lượng (hiện chưa có truy vấn)</th>
       <th>Ảnh</th>
       <th>Hành động</th>
     </tr>
@@ -29,7 +30,7 @@
         <td>
           <a href="/admin/edit-product?id=<?php echo $product->id; ?>" class="btn btn-primary btn-sm">Sửa</a>
           <a href="/admin/delete-product?id=<?php echo $product->id; ?>"
-             onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');"
+             onclick="return confirm('Bạn có chắc muốn xóa thông tin sách này?');"
              class="btn btn-danger btn-sm">Xóa</a>
         </td>
       </tr>

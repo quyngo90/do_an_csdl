@@ -5,6 +5,14 @@ require_once __DIR__ . '/../models/Banner.php';
 $banners = Banner::all(); 
 ?>
 
+<!-- Phần giới thiệu bên dưới carousel (giữ nguyên giao diện cũ) -->
+<div class="row mt-4 text-center">
+  <div class="col">
+    <h1>Chào mừng đến với thư viện Bí Ngô</h1>
+    <p>Trang web xem sách hiện có và sách đã mượn.</p>
+  </div>
+</div>
+
 <style>
   /* Thay mũi tên mặc định bằng SVG màu đen */
   .carousel-control-prev-icon {
@@ -88,12 +96,6 @@ $banners = Banner::all();
   </button>
 </div>
 
-<!-- Phần giới thiệu bên dưới carousel (giữ nguyên giao diện cũ) -->
-<div class="row mt-4 text-center">
-  <div class="col">
-    <h1>Chào mừng đến với Topzone</h1>
-    <p>Trang web bán thiết bị điện tử hàng đầu.</p>
-  </div>
-</div>
+
 
 <?php include_once __DIR__ . '/layouts/footer.php'; ?>

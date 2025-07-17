@@ -1,14 +1,14 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="container">
-  <h2>Thêm sản phẩm</h2>
+  <h2>Thêm sách</h2>
   <form action="/admin/store-product" method="post" enctype="multipart/form-data">
     <div class="mb-3">
-      <label class="form-label">Tên sản phẩm</label>
+      <label class="form-label">Tên sách </label>
       <input type="text" name="name" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Giá</label>
+      <label class="form-label">no giá</label>
       <input type="number" name="price" class="form-control" required step="0.01">
     </div>
     <div class="mb-3">
@@ -19,11 +19,11 @@
     <div class="mb-3">
       <label class="form-label">Loại sản phẩm</label>
       <select name="category" class="form-control">
-        <option value="phone">Điện thoại</option>
-        <option value="laptop">Máy tính</option>
-        <option value="accessory">Phụ kiện</option>
-        <option value="component">Linh kiện điện tử</option>
-        <option value="service">Dịch vụ</option>
+        <option value="phone">Tiểu thuyết</option>
+        <option value="laptop">Hư cấu</option>
+        <option value="accessory">Kinh dị</option>
+        <option value="component">Học tập</option>
+        <option value="service">Thiên nhiên và khoa học</option>
       </select>
     </div>
     <!-- Trường nhập số lượng -->

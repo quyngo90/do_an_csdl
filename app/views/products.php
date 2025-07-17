@@ -1,18 +1,18 @@
 <?php include __DIR__ . '/layouts/header.php'; ?>
 
 <div class="container mt-4">
-  <h2 class="mb-4">Sản phẩm</h2>
+  <h2 class="mb-4">Sách</h2>
 
   <!-- Nút lọc theo danh mục (giữ nguyên) -->
   <div class="row mb-4">
     <div class="col">
       <div class="d-flex flex-wrap">
         <a href="/products" class="btn btn-primary m-1">Tất cả</a>
-        <a href="/products?category=phone" class="btn btn-primary m-1">Điện thoại</a>
-        <a href="/products?category=laptop" class="btn btn-primary m-1">Máy tính</a>
-        <a href="/products?category=accessory" class="btn btn-primary m-1">Phụ kiện</a>
-        <a href="/products?category=component" class="btn btn-primary m-1">Linh kiện điện tử</a>
-        <a href="/products?category=service" class="btn btn-primary m-1">Dịch vụ</a>
+        <a href="/products?category=phone" class="btn btn-primary m-1">Hư cấu</a>
+        <a href="/products?category=laptop" class="btn btn-primary m-1">Tiểu thuyết</a>
+        <a href="/products?category=accessory" class="btn btn-primary m-1">Kinh dị</a>
+        <a href="/products?category=component" class="btn btn-primary m-1">Thiên nhiên và khoa học</a>
+        <a href="/products?category=service" class="btn btn-primary m-1">Học tập</a>
       </div>
     </div>
   </div>
@@ -26,12 +26,12 @@
       <div class="col-md-3">
         <input type="text" name="tags" class="form-control" placeholder="Tag (cách nhau bởi dấu phẩy)" value="<?php echo $_GET['tags'] ?? ''; ?>">
       </div>
-      <div class="col-md-2">
+      <!--<div class="col-md-2">
         <input type="number" name="min_price" class="form-control" placeholder="Giá tối thiểu" value="<?php echo $_GET['min_price'] ?? ''; ?>">
       </div>
       <div class="col-md-2">
         <input type="number" name="max_price" class="form-control" placeholder="Giá tối đa" value="<?php echo $_GET['max_price'] ?? ''; ?>">
-      </div>
+      </div> -->
       <div class="col-md-2">
         <button type="submit" class="btn btn-primary w-100">Lọc</button>
       </div>
@@ -76,7 +76,7 @@
       <?php endforeach; ?>
     <?php else: ?>
       <div class="col">
-        <p>Không có sản phẩm nào phù hợp.</p>
+        <p>Không có sách nào phù hợp.</p>
       </div>
     <?php endif; ?>
   </div>

@@ -1,6 +1,6 @@
 <?php include __DIR__ . '/layouts/header.php'; ?>
 
-<h2>Giỏ hàng của bạn</h2>
+<h2>Sách đã mượn</h2>
 
 <?php if(!empty($cartItems)): ?>
     <table class="table">

@@ -22,7 +22,7 @@ class OrderController {
                 $product = $item['product'];
                 $orderQuantity = $item['quantity'];
                 if ($product->quantity < $orderQuantity) {
-                    echo "Sản phẩm '{$product->name}' hiện đang hết hàng, quý khách vui lòng lựa chọn sản phẩm khác.";
+                    echo "Sách '{$product->name}' không còn ở thư viện.";
                     return;
                 }
             }

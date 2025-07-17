@@ -12,7 +12,7 @@
       <a href="/cart/add?id=<?php echo $product->id; ?>" class="btn btn-success">Thêm vào giỏ hàng</a>
     <?php else: ?>
       <div class="alert alert-warning">
-        Sản phẩm này hiện đang hết hàng, quý khách vui lòng lựa chọn sản phẩm khác.
+        Sách hiện tại không còn tại thư viện.
       </div>
     <?php endif; ?>
   </div>

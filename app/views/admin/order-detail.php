@@ -8,7 +8,7 @@
     <div class="card-body">
       <div class="row mb-3">
         <div class="col-md-6">
-          <p><strong>Tên khách hàng:</strong> <?php echo htmlspecialchars($order->user_name); ?></p>
+          <p><strong>Tên người dùng:</strong> <?php echo htmlspecialchars($order->user_name); ?></p>
           <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($order->user_phone); ?></p>
           <p><strong>Địa chỉ nhận hàng:</strong> <?php echo htmlspecialchars($order->shipping_address); ?></p>
           <p><strong>Phương thức thanh toán:</strong> <?php echo htmlspecialchars($order->payment_method); ?></p>
