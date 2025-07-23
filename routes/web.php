@@ -41,20 +41,14 @@ elseif (strpos($request, '/book-detail') === 0 || strpos($request, '/product-det
         echo "ID sách không hợp lệ!";
     }
 }
-// 4. GIỎ HÀNG (đổi thành Danh sách mượn tạm)
-elseif (strpos($request, '/cart') === 0) {
-    $controller = new CartController();
-    if (isset($_GET['id']) && strpos($request, 'add') !== false) {
-        $controller->add($_GET['id']);
-    } elseif (isset($_GET['id']) && strpos($request, 'remove') !== false) {
-        $controller->remove($_GET['id']);
-    } elseif (strpos($request, '/cart/update') === 0 && $_SERVER['REQUEST_METHOD'] === 'POST') {
-        $controller->update();
-    } else {
-        $controller->index();
-    }
-}
+
 // 4.1. CHECKOUT (đổi thành Xác nhận mượn sách)
+
+elseif (strpos($request, '/borrow/add') === 0 && isset($_GET['id'])) {
+    $controller = new BorrowController();
+    $controller->addSingleBook(intval($_GET['id']));
+}
+
 elseif (strpos($request, '/checkout') === 0) {
     $controller = new BorrowController();
     $controller->checkout();
