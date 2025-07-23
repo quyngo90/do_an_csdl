@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../models/Borrow.php';
 require_once __DIR__ . '/../models/Book.php';
 require_once __DIR__ . '/../models/Cart.php';
-
+require_once __DIR__ . '/../../config/database.php';
 class BorrowController {
     public function checkout() {
         if (!isset($_SESSION['user_id'])) {
@@ -17,8 +17,13 @@ class BorrowController {
                 return;
             }
 
+            // Lấy kết nối PDO
+            $db = Database::getInstance();
+            $pdo = $db->getConnection();
+
             // Kiểm tra số lượng sách còn lại
             foreach ($cartItems as $item) {
+                // $item['sach']->soluong là số lượng hiện tại của sách
                 if ($item['sach']->soluong < $item['soluong']) {
                     echo "Sách '{$item['sach']->tensach}' không đủ số lượng!";
                     return;
@@ -75,6 +80,54 @@ class BorrowController {
                 echo "Cập nhật trạng thái thất bại!";
             }
         }
+    }
+
+    // Thêm sách đơn lẻ vào phiếu mượn mới
+    public function addSingleBook($bookId)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $db = Database::getInstance();
+        $pdo = $db->getConnection();
+
+        // Kiểm tra số lượng sách còn lại
+        $stmt = $pdo->prepare("SELECT soluong FROM sach WHERE id = ?");
+        $stmt->execute([$bookId]);
+        $soluong = $stmt->fetchColumn();
+
+        if ($soluong === false) {
+            echo "Sách không tồn tại!";
+            exit;
+        }
+
+        if ($soluong <= 0) {
+            echo "Sách hiện đã hết. Không thể mượn.";
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $today = date('Y-m-d');
+        $hantra = date('Y-m-d', strtotime('+7 days'));
+
+        // Tạo phiếu mượn mới
+        $stmt = $pdo->prepare("INSERT INTO phieumuon (id_thanhvien, ngaymuon, hantra) VALUES (?, ?, ?)");
+        $stmt->execute([$userId, $today, $hantra]);
+
+        $phieuMuonId = $pdo->lastInsertId();
+
+        // Thêm chi tiết mượn cho sách này
+        $stmt = $pdo->prepare("INSERT INTO chitietmuon (id_phieumuon, id_sach, soluong) VALUES (?, ?, 1)");
+        $stmt->execute([$phieuMuonId, $bookId]);
+
+        // Cập nhật số lượng sách
+        $stmt = $pdo->prepare("UPDATE sach SET soluong = soluong - 1 WHERE id = ? AND soluong > 0");
+        $stmt->execute([$bookId]);
+
+        header('Location: /my-borrows');
+        exit;
     }
 }
 ?>

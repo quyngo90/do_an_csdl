@@ -1,6 +1,11 @@
 <?php include __DIR__ . '/layouts/header.php'; ?>
 
 <div class="row mt-4">
+
+  <?php if (isset($_GET['added'])): ?>
+    <div class="alert alert-success w-100">Đã thêm vào phiếu mượn</div>
+  <?php endif; ?>
+
   <div class="col-md-5">
     <img src="/assets/images/<?php echo htmlspecialchars($book->anhbia); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($book->tensach); ?>">
   </div>
@@ -25,7 +30,7 @@
     <p><strong>Số lượng còn lại:</strong> <?php echo $book->soluong; ?></p>
 
     <?php if ($book->soluong > 0): ?>
-      <a href="/cart/add?id=<?php echo $book->id; ?>" class="btn btn-success">Mượn sách</a>
+      <a href="/borrow/add?id=<?php echo $book->id; ?>" class="btn btn-success">Mượn sách</a>
     <?php else: ?>
       <div class="alert alert-warning mt-2">
         Sách hiện đã hết. Vui lòng quay lại sau.
