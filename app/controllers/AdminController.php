@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/../models/Book.php';
+require_once __DIR__ . '/../models/Member.php';
+require_once __DIR__ . '/../models/Borrow.php';
+require_once __DIR__ . '/../models/BorrowDetail.php'; // nếu bạn cần hiển thị chi tiết
 
 
 class AdminController {
@@ -16,6 +19,37 @@ public function manageBooks() {
     include_once __DIR__ . '/../views/admin/manage-books.php';
 }
     
+ public function manageMembers() {
+        // 1) Nạp model
+        require_once __DIR__ . '/../models/Member.php';
+
+        // 2) Lấy tất cả thành viên
+        $members = Member::all();
+
+        // 3) Include view tương ứng
+        include_once __DIR__ . '/../views/admin/manage-members.php';
+    }
+    public function manageBorrows() {
+        // Nhận filter trạng thái nếu có
+        $status = $_GET['status'] ?? null;
+
+        // Gọi đúng method getAll, truyền $status (null để lấy tất cả)
+        $borrows = Borrow::getAll($status);  // <-- sửa từ Borrow::all() thành Borrow::getAll()
+
+        // Tải view danh sách
+        include_once __DIR__ . '/../views/admin/manage-borrows.php';
+    }
+public function deleteMember() {
+    // Kiểm tra xem có truyền id qua GET không
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+        // Gọi hàm xóa của model Member
+        Member::delete($id);
+    }
+    // Sau khi xóa, redirect về trang quản lý thành viên
+    header("Location: /admin/manage-members");
+    exit;
+}
     // Hiển thị form thêm sản phẩm
 public function showAddBookForm() {
     include_once __DIR__ . '/../views/admin/add-book.php';

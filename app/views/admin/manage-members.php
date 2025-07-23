@@ -2,9 +2,9 @@
 
 <div class="container mt-4">
   <h2>Quản lý Thành viên</h2>
-  <a href="/admin/add-member" class="btn btn-success mb-3">Thêm Thành viên</a>
+ 
 
-  <table class="table table-bordered">
+  <table class="table table-bordered">  
     <thead>
       <tr>
         <th>ID</th>
@@ -30,7 +30,7 @@
           </span>
         </td>
         <td>
-          <a href="/admin/edit-member?id=<?php echo $member->id; ?>" class="btn btn-primary btn-sm">Sửa</a>
+          
           <a href="/admin/delete-member?id=<?php echo $member->id; ?>" 
              class="btn btn-danger btn-sm"
              onclick="return confirm('Xóa thành viên này?')">Xóa</a>
