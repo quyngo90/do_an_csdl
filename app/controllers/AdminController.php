@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Book.php';
 require_once __DIR__ . '/../models/Banner.php'; // Đã thêm để nạp lớp Banner
 
 class AdminController {
@@ -140,77 +140,79 @@ class AdminController {
     }
 
     // Quản lý người dùng
-    public function manageUsers() {
-        require_once __DIR__ . '/../models/User.php';
-        $users = User::all();
-        include_once __DIR__ . '/../views/admin/manage-users.php';
+    public function manageMembers() {
+        $members = Member::all();
+        include_once __DIR__ . '/../views/admin/manage-members.php';
     }
 
-    // Các hàm thêm, sửa, xoá người dùng
-    public function addUser() {
-        include_once __DIR__ . '/../views/admin/add-user.php';
+    public function addMember() {
+        include_once __DIR__ . '/../views/admin/add-member.php';
     }
 
-    public function storeUser() {
+    public function storeMember() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'name'     => trim($_POST['name']),
-                'email'    => trim($_POST['email']),
-                'password' => $_POST['password'],
-                'role'     => $_POST['role'] ?? 'customer'
+                'hoten' => trim($_POST['hoten']),
+                'email' => trim($_POST['email']),
+                'matkhau' => $_POST['matkhau'],
+                'sodienthoai' => trim($_POST['sodienthoai']),
+                'diachi' => trim($_POST['diachi']),
+                'ngaysinh' => $_POST['ngaysinh'],
+                'vaitro' => $_POST['vaitro'] ?? 'docgia'
             ];
-            $user = new User($data);
-            if ($user->save()) {
-                header("Location: /admin/manage-users");
+            
+            $member = new Member($data);
+            if ($member->save()) {
+                header("Location: /admin/manage-members");
                 exit;
             } else {
-                echo "Lỗi khi thêm người dùng!";
+                echo "Lỗi khi thêm thành viên!";
             }
         }
     }
 
-    public function editUser() {
+    public function editMember() {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
-            $user = User::find($id);
-            if ($user) {
-                include_once __DIR__ . '/../views/admin/edit-user.php';
+            $member = Member::find($id);
+            if ($member) {
+                include_once __DIR__ . '/../views/admin/edit-member.php';
                 return;
             }
         }
-        echo "Không tìm thấy người dùng!";
+        echo "Không tìm thấy thành viên!";
     }
 
-    public function updateUser() {
+    public function updateMember() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($_POST['id']);
-            $oldUser = User::find($id);
-            if (!$oldUser) {
-                echo "Người dùng không tồn tại!";
-                return;
-            }
             $data = [
-                'name'  => trim($_POST['name']),
+                'hoten' => trim($_POST['hoten']),
                 'email' => trim($_POST['email']),
-                'role'  => $_POST['role'] ?? $oldUser->role
+                'sodienthoai' => trim($_POST['sodienthoai']),
+                'diachi' => trim($_POST['diachi']),
+                'ngaysinh' => $_POST['ngaysinh'],
+                'vaitro' => $_POST['vaitro']
             ];
-            if (User::update($id, $data)) {
-                header("Location: /admin/manage-users");
+            
+            if (Member::update($id, $data)) {
+                header("Location: /admin/manage-members");
                 exit;
             } else {
-                echo "Cập nhật người dùng thất bại!";
+                echo "Cập nhật thông tin thất bại!";
             }
         }
     }
 
-    public function deleteUser() {
+    public function deleteMember() {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
-            User::delete($id);
+            Member::delete($id);
         }
-        header("Location: /admin/manage-users");
+        header("Location: /admin/manage-members");
         exit;
     }
+}
 
     // Quản lý Banner
 

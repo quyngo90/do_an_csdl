@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/Product.php';
+require_once __DIR__ . '/Book.php';
 
 class Cart {
     // Lấy danh sách sản phẩm trong giỏ hàng của user hiện tại

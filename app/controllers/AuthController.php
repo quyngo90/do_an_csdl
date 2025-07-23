@@ -1,18 +1,19 @@
 <?php
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/Member.php';
 
 class AuthController {
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email']);
             $password = $_POST['password'];
-            $user = User::authenticate($email, $password);
-            if ($user) {
-                $_SESSION['user_id']   = $user->id;
-                $_SESSION['user_name'] = $user->name;
-                $_SESSION['user_role'] = $user->role;
+            $member = Member::authenticate($email, $password);
+            
+            if ($member) {
+                $_SESSION['user_id'] = $member->id;
+                $_SESSION['user_name'] = $member->hoten;
+                $_SESSION['user_role'] = $member->vaitro;
                 
-                if ($user->role === 'admin') {
+                if ($member->vaitro === 'quantri') {
                     header('Location: /admin/dashboard');
                 } else {
                     header('Location: /');
@@ -25,19 +26,20 @@ class AuthController {
         include_once __DIR__ . '/../views/login.php';
     }
     
-    
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'name'     => trim($_POST['name']),
-                'email'    => trim($_POST['email']),
-                'password' => $_POST['password'],
-                'phone'    => trim($_POST['phone']),
-                'address'  => trim($_POST['address']),
-                'birthday' => $_POST['birthday']
+                'hoten' => trim($_POST['hoten']),
+                'email' => trim($_POST['email']),
+                'matkhau' => $_POST['matkhau'],
+                'sodienthoai' => trim($_POST['sodienthoai']),
+                'diachi' => trim($_POST['diachi']),
+                'ngaysinh' => $_POST['ngaysinh'],
+                'vaitro' => 'docgia'
             ];
-            $user = new User($data);
-            if ($user->save()) {
+            
+            $member = new Member($data);
+            if ($member->save()) {
                 header('Location: /login');
                 exit;
             } else {
@@ -46,5 +48,10 @@ class AuthController {
         }
         include_once __DIR__ . '/../views/register.php';
     }
+    
+    public function logout() {
+        session_destroy();
+        header('Location: /login');
+        exit;
+    }
 }
-?>
