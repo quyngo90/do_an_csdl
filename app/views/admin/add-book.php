@@ -1,6 +1,24 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="container">
+    <!-- HIỂN THỊ ERROR & SUCCESS -->
+    <?php if (!empty($_SESSION['errors'])): ?>
+        <div class="alert alert-danger">
+            <?php foreach ($_SESSION['errors'] as $err): ?>
+                <p><?= htmlspecialchars($err) ?></p>
+            <?php endforeach; ?>
+        </div>
+        <?php unset($_SESSION['errors']); ?>
+    <?php endif; ?>
+
+    <?php if (!empty($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <p><?= htmlspecialchars($_SESSION['success']) ?></p>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    <!-- /HIỂN THỊ ERROR & SUCCESS -->
+
     <h2>Thêm Sách Mới</h2>
     <form action="/admin/store-book" method="post" enctype="multipart/form-data">
         <div class="mb-3">
