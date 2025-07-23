@@ -86,7 +86,7 @@ elseif (strpos($request, '/register') === 0) {
 }
 // 8. ADMIN (cập nhật các route quản lý)
 elseif (strpos($request, '/admin') === 0) {
-    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'quantri') {
         echo "Bạn không có quyền truy cập trang admin.";
         exit;
     }
@@ -98,7 +98,30 @@ elseif (strpos($request, '/admin') === 0) {
     }
     // Quản lý sách
     elseif ($request == '/admin/manage-books') {
-        $controller->manageBooks();
+        $controller->manageBooks();  
+    }
+    // Hiển thị form Thêm sách
+    elseif ($request == '/admin/add-book') {
+        // Nếu bạn đã có sẵn method showAddBookForm(), gọi luôn:
+        // $controller->showAddBookForm();
+        // hoặc đơn giản include the view:
+        include_once __DIR__ . '/../app/views/admin/add-book.php';
+    }
+    // Xử lý lưu sách mới
+    elseif ($request == '/admin/store-book') {
+        $controller->addBook();
+    }
+    // Sửa sách
+    elseif (strpos($request, '/admin/edit-book') === 0 && isset($_GET['id'])) {
+        $controller->showEditBookForm(intval($_GET['id']));
+    }
+    // Xử lý cập nhật sách
+    elseif (strpos($request, '/admin/update-book') === 0 && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller->updateBook(intval($_POST['id']));
+    }
+    // Xóa sách
+    elseif (strpos($request, '/admin/delete-book') === 0 && isset($_GET['id'])) {
+        $controller->deleteBook(intval($_GET['id']));
     }
     // Quản lý phiếu mượn
     elseif (strpos($request, '/admin/manage-borrows') === 0) {
@@ -138,28 +161,7 @@ elseif (strpos($request, '/admin') === 0) {
     elseif (strpos($request, '/admin/update-borrow-status') === 0) {
         $controller->updateBorrowStatus();
     }
-    // Quản lý banner
-    elseif ($request == '/admin/manage-banners') {
-        $controller->manageBanners();
-    }
-    elseif ($request == '/admin/add-banner') {
-        $controller->addBanner();
-    }
-    elseif ($request == '/admin/store-banner') {
-        $controller->storeBanner();
-    }
-    elseif (strpos($request, '/admin/edit-banner') === 0) {
-        $controller->editBanner();
-    }
-    elseif (strpos($request, '/admin/update-banner') === 0) {
-        $controller->updateBanner();
-    }
-    elseif (strpos($request, '/admin/delete-banner') === 0) {
-        $controller->deleteBanner();
-    }
-    else {
-        echo "404 Not Found (Admin Panel)";
-    }
+
 }
 // 9. TÌM KIẾM
 elseif (strpos($request, '/search') === 0) {

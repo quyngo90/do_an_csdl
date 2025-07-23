@@ -1,8 +1,6 @@
 <?php 
 include_once __DIR__ . '/layouts/header.php'; 
-require_once __DIR__ . '/../models/Banner.php';
 
-$banners = Banner::all(); 
 ?>
 
 <!-- Phần giới thiệu bên dưới carousel (giữ nguyên giao diện cũ) -->

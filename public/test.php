@@ -1,4 +1,4 @@
 <?php
 // generate_password.php
-echo password_hash('quyngo123@', PASSWORD_DEFAULT);
+echo password_hash('123', PASSWORD_DEFAULT);
 ?>

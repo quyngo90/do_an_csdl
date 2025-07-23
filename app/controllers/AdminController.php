@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Book.php';
-require_once __DIR__ . '/../models/Banner.php'; // Đã thêm để nạp lớp Banner
+
 
 class AdminController {
 
@@ -10,15 +10,44 @@ class AdminController {
     }
     
     // Hiển thị danh sách sản phẩm
-    public function manageProducts() {
-        $products = Product::all();
-        include_once __DIR__ . '/../views/admin/manage-products.php';
-    }
+public function manageBooks() {
+    require_once __DIR__ . '/../models/Book.php'; // Đảm bảo bạn đã nạp model Book
+    $books = Book::all(); // Gọi danh sách sách từ CSDL
+    include_once __DIR__ . '/../views/admin/manage-books.php';
+}
     
     // Hiển thị form thêm sản phẩm
-    public function addProduct() {
-        include_once __DIR__ . '/../views/admin/add-product.php';
-    }
+public function showAddBookForm() {
+    include_once __DIR__ . '/../views/admin/add-book.php';
+}
+
+
+public function addBook() {
+    require_once __DIR__ . '/../models/Book.php';
+    Book::create($_POST);
+    header('Location: /admin/manage-books');
+    exit;
+}
+
+public function showEditBookForm($id) {
+    require_once __DIR__ . '/../models/Book.php';
+    $book = Book::find($id);
+    include_once __DIR__ . '/../views/admin/edit-book.php';
+}
+
+public function updateBook($id) {
+    require_once __DIR__ . '/../models/Book.php';
+    Book::update($id, $_POST);
+    header('Location: /admin/manage-books');
+    exit;
+}
+
+public function deleteBook($id) {
+    require_once __DIR__ . '/../models/Book.php';
+    Book::delete($id);
+    header('Location: /admin/manage-books');
+    exit;
+}
     
     // Xử lý thêm sản phẩm (CRUD - Create)
     public function storeProduct() {
@@ -140,79 +169,77 @@ class AdminController {
     }
 
     // Quản lý người dùng
-    public function manageMembers() {
-        $members = Member::all();
-        include_once __DIR__ . '/../views/admin/manage-members.php';
+    public function manageUsers() {
+        require_once __DIR__ . '/../models/User.php';
+        $users = User::all();
+        include_once __DIR__ . '/../views/admin/manage-users.php';
     }
 
-    public function addMember() {
-        include_once __DIR__ . '/../views/admin/add-member.php';
+    // Các hàm thêm, sửa, xoá người dùng
+    public function addUser() {
+        include_once __DIR__ . '/../views/admin/add-user.php';
     }
 
-    public function storeMember() {
+    public function storeUser() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
-                'hoten' => trim($_POST['hoten']),
-                'email' => trim($_POST['email']),
-                'matkhau' => $_POST['matkhau'],
-                'sodienthoai' => trim($_POST['sodienthoai']),
-                'diachi' => trim($_POST['diachi']),
-                'ngaysinh' => $_POST['ngaysinh'],
-                'vaitro' => $_POST['vaitro'] ?? 'docgia'
+                'name'     => trim($_POST['name']),
+                'email'    => trim($_POST['email']),
+                'password' => $_POST['password'],
+                'role'     => $_POST['role'] ?? 'customer'
             ];
-            
-            $member = new Member($data);
-            if ($member->save()) {
-                header("Location: /admin/manage-members");
+            $user = new User($data);
+            if ($user->save()) {
+                header("Location: /admin/manage-users");
                 exit;
             } else {
-                echo "Lỗi khi thêm thành viên!";
+                echo "Lỗi khi thêm người dùng!";
             }
         }
     }
 
-    public function editMember() {
+    public function editUser() {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
-            $member = Member::find($id);
-            if ($member) {
-                include_once __DIR__ . '/../views/admin/edit-member.php';
+            $user = User::find($id);
+            if ($user) {
+                include_once __DIR__ . '/../views/admin/edit-user.php';
                 return;
             }
         }
-        echo "Không tìm thấy thành viên!";
+        echo "Không tìm thấy người dùng!";
     }
 
-    public function updateMember() {
+    public function updateUser() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($_POST['id']);
+            $oldUser = User::find($id);
+            if (!$oldUser) {
+                echo "Người dùng không tồn tại!";
+                return;
+            }
             $data = [
-                'hoten' => trim($_POST['hoten']),
+                'name'  => trim($_POST['name']),
                 'email' => trim($_POST['email']),
-                'sodienthoai' => trim($_POST['sodienthoai']),
-                'diachi' => trim($_POST['diachi']),
-                'ngaysinh' => $_POST['ngaysinh'],
-                'vaitro' => $_POST['vaitro']
+                'role'  => $_POST['role'] ?? $oldUser->role
             ];
-            
-            if (Member::update($id, $data)) {
-                header("Location: /admin/manage-members");
+            if (User::update($id, $data)) {
+                header("Location: /admin/manage-users");
                 exit;
             } else {
-                echo "Cập nhật thông tin thất bại!";
+                echo "Cập nhật người dùng thất bại!";
             }
         }
     }
 
-    public function deleteMember() {
+    public function deleteUser() {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
-            Member::delete($id);
+            User::delete($id);
         }
-        header("Location: /admin/manage-members");
+        header("Location: /admin/manage-users");
         exit;
     }
-}
 
     // Quản lý Banner
 
@@ -296,6 +323,7 @@ class AdminController {
             }
         }
     }
+
 
     // Xử lý xóa banner
     public function deleteBanner() {

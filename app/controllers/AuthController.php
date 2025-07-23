@@ -13,8 +13,8 @@ class AuthController {
                 $_SESSION['user_name'] = $member->hoten;
                 $_SESSION['user_role'] = $member->vaitro;
                 
-                if ($member->vaitro === 'quantri') {
-                    header('Location: /admin/dashboard');
+                    if ($member->vaitro === 'quantri') {
+                        header('Location: /admin/dashboard');
                 } else {
                     header('Location: /');
                 }
