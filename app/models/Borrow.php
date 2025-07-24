@@ -24,6 +24,12 @@ class Borrow {
         $this->chitiet = $data['chitiet'] ?? [];
     }
 
+    public static function findActiveByUser($userId) {
+    $conn = Connection::getInstance();
+    $stmt = $conn->prepare("SELECT * FROM borrows WHERE user_id = ? AND status = 'dangmuon' LIMIT 1");
+    $stmt->execute([$userId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
     // Thêm vào Borrow.php
 public static function getAll($status = null) {
     $db = Database::getInstance()->getConnection();

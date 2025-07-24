@@ -104,27 +104,40 @@ class AdminController
      * Xử lý cập nhật sách
      */
     public function updateBook($id)
-    {
-        $data = [
-            'tensach'     => trim($_POST['title'] ?? ''),
-            'gia'         => floatval($_POST['gia'] ?? 0),
-            'mota'        => trim($_POST['mota'] ?? ''),
-        ];
-        // Xử lý ảnh mới nếu có
-        if (!empty($_FILES['anhbia']['tmp_name']) && $_FILES['anhbia']['error'] === UPLOAD_ERR_OK) {
-            $ext       = pathinfo($_FILES['anhbia']['name'], PATHINFO_EXTENSION);
-            $imageName = time() . '_' . uniqid() . '.' . $ext;
-            $uploadDir = __DIR__ . '/../../public/assets/images/';
+{
+    // 1. Lấy dữ liệu đúng tên trường
+    $data = [
+        'tensach'    => trim($_POST['tensach']    ?? ''),
+        'gia'        => floatval($_POST['gia']    ?? 0),
+        'mota'       => trim($_POST['mota']       ?? ''),
+        'soluong'    => intval($_POST['soluong']  ?? 0),
+        'theloai'    => trim($_POST['theloai']    ?? ''),
+        'tacgia'     => trim($_POST['tacgia']     ?? ''),
+        'nhaxuatban' => trim($_POST['nhaxuatban'] ?? ''),
+        'namxuatban' => intval($_POST['namxuatban'] ?? 0),
+        'tags'       => trim($_POST['tags']       ?? ''),
+    ];
 
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-            move_uploaded_file($_FILES['anhbia']['tmp_name'], $uploadDir . $imageName);
-            $data['anhbia'] = $imageName;
-        }
-        Book::update($id, $data);
-        $_SESSION['success'] = 'Cập nhật sách thành công!';
-        header('Location: /admin/manage-books');
-        exit;
+    // 2. Ảnh bìa mới (nếu có), ngược lại giữ lại giá trị cũ
+    if (!empty($_FILES['anhbia']['tmp_name'])
+        && $_FILES['anhbia']['error'] === UPLOAD_ERR_OK) {
+        $ext       = pathinfo($_FILES['anhbia']['name'], PATHINFO_EXTENSION);
+        $imageName = time() . '_' . uniqid() . '.' . $ext;
+        $uploadDir = __DIR__ . '/../../public/assets/images/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        move_uploaded_file($_FILES['anhbia']['tmp_name'], $uploadDir . $imageName);
+        $data['anhbia'] = $imageName;
+    } else {
+        // Nếu không upload mới, bạn có thể giữ lại ảnh cũ:
+        $data['anhbia'] = $_POST['old_anhbia'] ?? '';
     }
+
+    // 3. Cập nhật vào DB
+    Book::update($id, $data);
+    $_SESSION['success'] = 'Cập nhật sách thành công!';
+    header('Location: /admin/manage-books');
+    exit;
+}
 
     /**
      * Xử lý xóa sách

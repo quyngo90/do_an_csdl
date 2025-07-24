@@ -7,6 +7,16 @@
         <input type="hidden" name="id" value="<?php echo $book->id; ?>">
         <div class="mb-3">
             <label class="form-label">Tên sách</label>
+            <div class="mb-3">
+  <label class="form-label">Giá</label>
+  <input type="number" 
+         name="gia" 
+         class="form-control" 
+         value="<?php echo htmlspecialchars($book->gia); ?>" 
+         required 
+         min="0">
+</div>
+
             <input type="text" name="tensach" class="form-control" value="<?php echo htmlspecialchars($book->tensach); ?>" required>
         </div>
         <div class="mb-3">

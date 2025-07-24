@@ -29,13 +29,16 @@
 
     <p><strong>Số lượng còn lại:</strong> <?php echo $book->soluong; ?></p>
 
-    <?php if ($book->soluong > 0): ?>
-      <a href="/borrow/add?id=<?php echo $book->id; ?>" class="btn btn-success">Mượn sách</a>
-    <?php else: ?>
-      <div class="alert alert-warning mt-2">
-        Sách hiện đã hết. Vui lòng quay lại sau.
-      </div>
-    <?php endif; ?>
+<form action="/borrow/add" method="post">
+    <input type="hidden" name="book_id" value="<?= $product['id'] ?>">
+    <button type="submit" class="btn btn-success">Mượn sách</button>
+</form>
+
+<?php if (isset($_SESSION['borrow_message'])): ?>
+    <div class="alert alert-success mt-2">
+        <?= $_SESSION['borrow_message']; unset($_SESSION['borrow_message']); ?>
+    </div>
+<?php endif; ?>
   </div>
 </div>
 

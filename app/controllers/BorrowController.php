@@ -50,6 +50,41 @@ class BorrowController {
         }
     }
 
+    public function addToBorrow() {
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: /login');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
+        $bookId = intval($_POST['book_id']);
+        $userId = $_SESSION['user_id'];
+
+        // Tạo mới Borrow nếu chưa có (trạng thái 'dangmuon')
+        $borrow = Borrow::findActiveByUser($userId);
+        if (!$borrow) {
+            $borrowId = Borrow::create([
+                'user_id' => $userId,
+                'status' => 'dangmuon',
+                'borrow_date' => date('Y-m-d')
+            ]);
+        } else {
+            $borrowId = $borrow['id'];
+        }
+
+        // Thêm sách vào bảng chi tiết
+        BorrowDetail::create([
+            'borrow_id' => $borrowId,
+            'book_id' => $bookId,
+            'quantity' => 1
+        ]);
+
+        $_SESSION['borrow_message'] = "Đã thêm vào phiếu mượn";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+}
+
     public function viewBorrow($id) {
         $borrow = Borrow::find($id);
         if (!$borrow) {

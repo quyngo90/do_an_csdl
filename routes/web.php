@@ -125,6 +125,10 @@ elseif (strpos($request, '/admin') === 0) {
             $controller->manageBorrows();
         }
     }
+    elseif ($request == '/borrow/add') {
+    $controller = new BorrowController();
+    $controller->addToBorrow();
+}
     // Admin routes
     if ($request == '/admin/manage-members') {
         $controller->manageMembers();
