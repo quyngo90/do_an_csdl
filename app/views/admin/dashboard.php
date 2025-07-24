@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <!-- ✅ Quản lý Tác giả -->
+    <!-- Quản lý Tác giả -->
     <div class="col-md-3">
       <div class="card">
         <div class="card-header">Quản lý Tác giả</div>
@@ -46,6 +46,18 @@
         </div>
       </div>
     </div>
+
+    <!-- ✅ Quản lý Thể loại -->
+    <div class="col-md-3 mt-4">
+      <div class="card">
+        <div class="card-header">Quản lý Thể loại</div>
+        <div class="card-body">
+          <p>Thêm, sửa, xoá các thể loại sách trong thư viện.</p>
+          <a href="/admin/genres" class="btn btn-primary">Quản lí Thể loại</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 

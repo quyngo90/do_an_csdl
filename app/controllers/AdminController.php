@@ -2,11 +2,16 @@
 require_once __DIR__ . '/../models/Book.php';
 require_once __DIR__ . '/../models/Author.php';
 require_once __DIR__ . '/../models/Member.php';
+require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../models/Borrow.php';
 require_once __DIR__ . '/../models/BorrowDetail.php';
 
 use App\Models\Book;
 use App\Models\Author;
+use App\Models\Category;        
+use App\Models\Member;  
+use App\Models\Borrow;
+use App\Models\BorrowDetail;    
 
 class AdminController
 {
@@ -15,10 +20,10 @@ class AdminController
         include_once __DIR__ . '/../views/admin/dashboard.php';
     }
 
+    // --- QUẢN LÝ SÁCH ---
     public function manageBooks()
     {
         $db = Database::getInstance()->getConnection();
-
         $genres = $db->query("SELECT * FROM theloai")->fetchAll(PDO::FETCH_ASSOC);
         $authors = $db->query("SELECT * FROM tacgia")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -149,17 +154,15 @@ class AdminController
         exit;
     }
 
+    // --- QUẢN LÝ TÁC GIẢ ---
     public function manageAuthors()
     {
         $db = Database::getInstance()->getConnection();
         $authorModel = new Author($db);
 
         $keyword = trim($_GET['q'] ?? '');
-        $authors = $keyword !== ''
-            ? $authorModel->searchByName($keyword)
-            : $authorModel->all();
+        $authors = $keyword !== '' ? $authorModel->searchByName($keyword) : $authorModel->all();
 
-        $editMode = false;
         include_once __DIR__ . '/../views/admin/manage-authors.php';
     }
 
@@ -184,7 +187,7 @@ class AdminController
 
         $data = [
             'tentacgia' => $_POST['tentacgia'],
-            'tieusu'    => $_POST['tieusu'],
+            'tieusu'    => $_POST['tieusu']
         ];
 
         $authorModel->create($data);
@@ -200,7 +203,7 @@ class AdminController
 
         $data = [
             'tentacgia' => $_POST['tentacgia'],
-            'tieusu'    => $_POST['tieusu'],
+            'tieusu'    => $_POST['tieusu']
         ];
 
         $authorModel->update($id, $data);
@@ -219,4 +222,69 @@ class AdminController
         header('Location: /admin/authors');
         exit;
     }
+
+ public function manageGenres()
+{
+    $db = Database::getInstance()->getConnection();
+    $genreModel = new Category($db);
+
+    $keyword = trim($_GET['q'] ?? '');
+    $genres = $keyword !== '' ? $genreModel->searchByName($keyword) : $genreModel->all();
+
+    include_once __DIR__ . '/../views/admin/manage-genres.php';
+}
+
+public function showAddGenreForm()
+{
+    include_once __DIR__ . '/../views/admin/add-genre.php';
+}
+
+public function showEditGenreForm($id)
+{
+    $db = Database::getInstance()->getConnection();
+    $genreModel = new Category($db);
+    $genre = $genreModel->find($id);
+
+    include_once __DIR__ . '/../views/admin/edit-genre.php';
+}
+
+public function storeGenre()
+{
+    $db = Database::getInstance()->getConnection();
+    $genreModel = new Category($db);
+
+    $genreModel->create([
+        'tentheloai' => $_POST['tentheloai']
+    ]);
+
+    $_SESSION['success'] = 'Thêm thể loại thành công!';
+    header('Location: /admin/genres');
+    exit;
+}
+
+public function updateGenre($id)
+{
+    $db = Database::getInstance()->getConnection();
+    $genreModel = new Category($db);
+
+    $genreModel->update($id, [
+        'tentheloai' => $_POST['tentheloai']
+    ]);
+
+    $_SESSION['success'] = 'Cập nhật thể loại thành công!';
+    header('Location: /admin/genres');
+    exit;
+}
+
+public function deleteGenre($id)
+{
+    $db = Database::getInstance()->getConnection();
+    $genreModel = new Category($db);
+
+    $genreModel->delete($id);
+    $_SESSION['success'] = 'Xóa thể loại thành công!';
+    header('Location: /admin/genres');
+    exit;
+}
+
 }

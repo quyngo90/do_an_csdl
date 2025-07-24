@@ -113,7 +113,15 @@
 	(7, 'Kinh doanh', 'kinh-doanh'),
 	(8, 'Trinh tham', 'trinh-tham'),
 	(9, 'Co dien', 'co-dien');
-
+UPDATE theloai SET mota = 'Những câu chuyện hư cấu, giàu cảm xúc và sâu sắc.' WHERE id = 1;
+UPDATE theloai SET mota = 'Sách về kiến thức khoa học tự nhiên, xã hội, công nghệ.' WHERE id = 2;
+UPDATE theloai SET mota = 'Tài liệu học lập trình, ngôn ngữ, thuật toán.' WHERE id = 3;
+UPDATE theloai SET mota = 'Sách giáo dục, học đường, kỹ năng sống.' WHERE id = 4;
+UPDATE theloai SET mota = 'Tác phẩm văn học trong và ngoài nước.' WHERE id = 5;
+UPDATE theloai SET mota = 'Sách dành cho trẻ em, giúp phát triển tư duy, nhân cách.' WHERE id = 6;
+UPDATE theloai SET mota = 'Kinh nghiệm kinh doanh, làm giàu, quản trị.' WHERE id = 7;
+UPDATE theloai SET mota = 'Truyện trinh thám, phá án, ly kỳ.' WHERE id = 8;
+UPDATE theloai SET mota = 'Tác phẩm cổ điển, giá trị lâu dài trong văn học.' WHERE id = 9;
 INSERT INTO `tacgia` (`id`, `tentacgia`, `tieusu`) VALUES
 (1, 'Nguyen Nhat Anh', 'Nhà văn nổi tiếng Việt Nam, chuyên viết cho thiếu nhi.'),
 (2, 'Stephen Hawking', 'Nhà vật lý lý thuyết, vũ trụ học, tác giả cuốn "Lược sử thời gian".'),

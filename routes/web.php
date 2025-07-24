@@ -73,6 +73,30 @@ if (strpos($request, '/admin') === 0) {
         case (strpos($request, '/admin/authors/delete') === 0 && isset($_GET['id'])):
             $controller->deleteAuthor((int)$_GET['id']);
             break;
+// ✅ Quản lý Thể loại
+case ($request === '/admin/genres'):
+    $controller->manageGenres();
+    break;
+
+case ($request === '/admin/genres/create'):
+    $controller->showAddGenreForm();
+    break;
+
+case ($request === '/admin/genres/store' && $_SERVER['REQUEST_METHOD'] === 'POST'):
+    $controller->storeGenre();
+    break;
+
+case (strpos($request, '/admin/genres/edit') === 0 && isset($_GET['id'])):
+    $controller->showEditGenreForm((int)$_GET['id']);
+    break;
+
+case ($request === '/admin/genres/update' && $_SERVER['REQUEST_METHOD'] === 'POST'):
+    $controller->updateGenre((int)$_POST['id']);
+    break;
+
+case (strpos($request, '/admin/genres/delete') === 0 && isset($_GET['id'])):
+    $controller->deleteGenre((int)$_GET['id']);
+    break;
 
         // ❌ Fallback: 404
         default:
