@@ -28,8 +28,8 @@
                 <tr>
                     <td><?= $book->id ?></td>
                     <td class="text-start"><?= htmlspecialchars($book->tensach) ?></td>
-                    <td><?= htmlspecialchars($book->tacgia) ?></td>
-                    <td><span class="badge bg-info text-dark"><?= htmlspecialchars($book->theloai) ?></span></td>
+                    <td><?= htmlspecialchars($book->tentacgia ?? 'Không rõ') ?></td>
+                    <td><span class="badge bg-info text-dark"><?= htmlspecialchars($book->tentheloai ?? 'Không rõ') ?></span></td>
                     <td><?= htmlspecialchars($book->nhaxuatban) ?></td>
                     <td><?= $book->namxuatban ?></td>
                     <td><?= $book->soluong ?></td>

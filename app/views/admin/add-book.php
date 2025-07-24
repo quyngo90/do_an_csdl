@@ -20,50 +20,63 @@
     <!-- /HIỂN THỊ ERROR & SUCCESS -->
 
     <h2>Thêm Sách Mới</h2>
-    <form action="/admin/store-book" method="post" enctype="multipart/form-data">
+    <form action="/admin/store-book" method="post">
         <div class="mb-3">
             <label class="form-label">Tên sách</label>
             <input type="text" name="tensach" class="form-control" required>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Tác giả</label>
-            <input type="text" name="tacgia" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Thể loại</label>
-            <select name="theloai" class="form-control" required>
-                <option value="tieu-thuyet">Tiểu thuyết</option>
-                <option value="khoa-hoc">Khoa học</option>
-                <option value="lap-trinh">Lập trình</option>
-                <option value="lich-su">Lịch sử</option>
-                <option value="van-hoc">Văn học</option>
+            <select name="tacgia_id" class="form-control" required>
+                <option value="">-- Chọn tác giả --</option>
+                <?php foreach ($authors as $author): ?>
+                    <option value="<?= $author['id'] ?>">
+                        <?= htmlspecialchars($author['tentacgia']) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label class="form-label">Thể loại</label>
+            <select name="theloai_id" class="form-control" required>
+                <option value="">-- Chọn thể loại --</option>
+                <?php foreach ($genres as $genre): ?>
+                    <option value="<?= $genre['id'] ?>">
+                        <?= htmlspecialchars($genre['tentheloai']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
         <div class="mb-3">
             <label class="form-label">Nhà xuất bản</label>
             <input type="text" name="nhaxuatban" class="form-control" required>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Năm xuất bản</label>
             <input type="number" name="namxuatban" class="form-control" required>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Số lượng</label>
             <input type="number" name="soluong" class="form-control" required min="0">
         </div>
+
         <div class="mb-3">
             <label class="form-label">Mô tả</label>
             <textarea name="mota" class="form-control" rows="5"></textarea>
         </div>
+
         <div class="mb-3">
             <label class="form-label">Tags (cách nhau bằng dấu phẩy)</label>
             <input type="text" name="tags" class="form-control" placeholder="vd: bestseller, new, hot">
         </div>
-        <div class="mb-3">
-            <label class="form-label">Ảnh bìa</label>
-            <input type="file" name="anhbia" class="form-control">
-        </div>
+
         <button type="submit" class="btn btn-primary">Thêm Sách</button>
+        <a href="/admin/manage-books" class="btn btn-secondary">Hủy</a>
     </form>
 </div>
 
