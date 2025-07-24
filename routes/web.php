@@ -1,15 +1,16 @@
 <?php
+
 session_start();
 
-// Nạp Controller Admin
+// Nạp controller & config DB
 require_once __DIR__ . '/../app/controllers/AdminController.php';
+require_once __DIR__ . '/../config/database.php';
 
-// ✅ Lấy đúng phần path, bỏ query string
+// Lấy path không kèm query string
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// ✅ Kiểm tra quyền admin
+// Chỉ cho phép người có vai trò quản trị
 if (strpos($request, '/admin') === 0) {
-
     if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'quantri') {
         echo "Bạn không có quyền truy cập trang admin.";
         exit;
@@ -18,12 +19,12 @@ if (strpos($request, '/admin') === 0) {
     $controller = new AdminController();
 
     switch (true) {
-        // DASHBOARD
+        // ✅ Dashboard
         case ($request === '/admin' || $request === '/admin/dashboard'):
             $controller->dashboard();
             break;
 
-        // QUẢN LÝ SÁCH
+        // ✅ Quản lý Sách
         case ($request === '/admin/manage-books'):
             $controller->manageBooks();
             break;
@@ -32,7 +33,7 @@ if (strpos($request, '/admin') === 0) {
             $controller->showAddBookForm();
             break;
 
-        case ($request === '/admin/store-book'):
+        case ($request === '/admin/store-book' && $_SERVER['REQUEST_METHOD'] === 'POST'):
             $controller->addBook();
             break;
 
@@ -48,7 +49,32 @@ if (strpos($request, '/admin') === 0) {
             $controller->deleteBook((int)$_GET['id']);
             break;
 
-        // 404 fallback
+        // ✅ Quản lý Tác giả
+        case ($request === '/admin/authors'):
+            $controller->manageAuthors();
+            break;
+
+        case ($request === '/admin/authors/create'):
+            $controller->showAddAuthorForm();
+            break;
+
+        case ($request === '/admin/authors/store' && $_SERVER['REQUEST_METHOD'] === 'POST'):
+            $controller->storeAuthor();
+            break;
+
+        case (strpos($request, '/admin/authors/edit') === 0 && isset($_GET['id'])):
+            $controller->showEditAuthorForm((int)$_GET['id']);
+            break;
+
+        case ($request === '/admin/authors/update' && $_SERVER['REQUEST_METHOD'] === 'POST'):
+            $controller->updateAuthor((int)$_POST['id']);
+            break;
+
+        case (strpos($request, '/admin/authors/delete') === 0 && isset($_GET['id'])):
+            $controller->deleteAuthor((int)$_GET['id']);
+            break;
+
+        // ❌ Fallback: 404
         default:
             http_response_code(404);
             include_once __DIR__ . '/../app/views/404.php';
@@ -56,7 +82,7 @@ if (strpos($request, '/admin') === 0) {
     }
 
 } else {
-    // Không phải route admin
+    // Người dùng thường
     http_response_code(404);
     include_once __DIR__ . '/../app/views/404.php';
 }

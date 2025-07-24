@@ -17,6 +17,25 @@
 	  `ngaytao` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+	-- 6. BANG THELOAI (mở rộng từ category cũ)
+	DROP TABLE IF EXISTS `theloai`;
+	CREATE TABLE `theloai` (
+	  `id` INT AUTO_INCREMENT PRIMARY KEY,
+	  `tentheloai` VARCHAR(50) NOT NULL,
+	  `slug` VARCHAR(50) NOT NULL,
+	  `mota` TEXT
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+	-- 7. BANG TACGIA
+		DROP TABLE IF EXISTS `tacgia`;
+		CREATE TABLE `tacgia` (
+		  `id` INT AUTO_INCREMENT PRIMARY KEY,
+		  `tentacgia` VARCHAR(100) NOT NULL,
+		  `tieusu` TEXT
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 	-- 2. BANG SACH (từ products)
 	DROP TABLE IF EXISTS `sach`;
 
@@ -77,23 +96,6 @@
 	  `ngaytao` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-	-- 6. BANG THELOAI (mở rộng từ category cũ)
-	DROP TABLE IF EXISTS `theloai`;
-	CREATE TABLE `theloai` (
-	  `id` INT AUTO_INCREMENT PRIMARY KEY,
-	  `tentheloai` VARCHAR(50) NOT NULL,
-	  `slug` VARCHAR(50) NOT NULL,
-	  `mota` TEXT
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-	-- 7. BANG TACGIA
-	DROP TABLE IF EXISTS `tacgia`;
-	CREATE TABLE `tacgia` (
-	  `id` INT AUTO_INCREMENT PRIMARY KEY,
-	  `tentacgia` VARCHAR(100) NOT NULL,
-	  `tieusu` TEXT,
-	  `anh` VARCHAR(255)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 	-- Thêm dữ liệu mẫu
@@ -112,16 +114,16 @@
 	(8, 'Trinh tham', 'trinh-tham'),
 	(9, 'Co dien', 'co-dien');
 
-	INSERT INTO `tacgia` (`id`, `tentacgia`) VALUES
-	(1, 'Nguyen Nhat Anh'),
-	(2, 'Stephen Hawking'),
-	(3, 'J.K. Rowling'),
-	(4, 'Agatha Christie'),
-	(5, 'Mark Twain'),
-	(6, 'Jane Austen'),
-	(7, 'George Orwell'),
-	(8, 'Ernest Hemingway'),
-	(9, 'F. Scott Fitzgerald');
+INSERT INTO `tacgia` (`id`, `tentacgia`, `tieusu`) VALUES
+(1, 'Nguyen Nhat Anh', 'Nhà văn nổi tiếng Việt Nam, chuyên viết cho thiếu nhi.'),
+(2, 'Stephen Hawking', 'Nhà vật lý lý thuyết, vũ trụ học, tác giả cuốn "Lược sử thời gian".'),
+(3, 'J.K. Rowling', 'Tác giả nổi tiếng với loạt truyện Harry Potter.'),
+(4, 'Agatha Christie', 'Nữ hoàng truyện trinh thám với các tác phẩm nổi tiếng như Hercule Poirot.'),
+(5, 'Mark Twain', 'Nhà văn Mỹ nổi tiếng với "Những cuộc phiêu lưu của Tom Sawyer".'),
+(6, 'Jane Austen', 'Tác giả kinh điển của văn học Anh với tác phẩm "Kiêu hãnh và định kiến".'),
+(7, 'George Orwell', 'Tác giả của các tiểu thuyết phản địa đàng như "1984" và "Trang trại động vật".'),
+(8, 'Ernest Hemingway', 'Nhà văn Mỹ, đoạt giải Nobel Văn học, với phong cách viết tối giản.'),
+(9, 'F. Scott Fitzgerald', 'Tác giả nổi bật thời đại Jazz, với tác phẩm "Gatsby vĩ đại".');
 
 	INSERT INTO `sach`
 	(`id`, `tensach`, `mota`, `theloai_id`, `soluong`, `tacgia_id`, `nhaxuatban`, `namxuatban`, `isbn`, `ngaythem`, `tags`) VALUES
