@@ -16,9 +16,55 @@ class AdminController
 
 public function manageBooks()
 {
-    $books = Book::getWithDetails(); // JOIN với tacgia và theloai
+    $db = Database::getInstance()->getConnection();
+
+    // Lấy danh sách tất cả thể loại và tác giả (dùng cho dropdown lọc)
+    $genres = $db->query("SELECT * FROM theloai")->fetchAll(PDO::FETCH_ASSOC);
+    $authors = $db->query("SELECT * FROM tacgia")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Xử lý tìm kiếm và lọc
+    $keyword     = trim($_GET['keyword'] ?? '');
+    $tacgia_id   = intval($_GET['tacgia_id'] ?? 0);
+    $theloai_id  = intval($_GET['theloai_id'] ?? 0);
+
+    $conditions = [];
+    if ($keyword !== '') {
+        $conditions[] = "CONVERT(LOWER(s.tensach) USING utf8mb4) LIKE CONVERT(LOWER(:keyword) USING utf8mb4)";
+    }
+    if ($tacgia_id > 0) {
+        $conditions[] = "s.tacgia_id = :tacgia_id";
+    }
+    if ($theloai_id > 0) {
+        $conditions[] = "s.theloai_id = :theloai_id";
+    }
+
+    $sql = "
+        SELECT s.*, tg.tentacgia, tl.tentheloai
+        FROM sach s
+        LEFT JOIN tacgia tg ON s.tacgia_id = tg.id
+        LEFT JOIN theloai tl ON s.theloai_id = tl.id
+    ";
+
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    $stmt = $db->prepare($sql);
+    if ($keyword !== '') {
+        $stmt->bindValue(':keyword', '%' . $keyword . '%');
+    }
+    if ($tacgia_id > 0) {
+        $stmt->bindValue(':tacgia_id', $tacgia_id, PDO::PARAM_INT);
+    }
+    if ($theloai_id > 0) {
+        $stmt->bindValue(':theloai_id', $theloai_id, PDO::PARAM_INT);
+    }
+    $stmt->execute();
+    $books = $stmt->fetchAll(PDO::FETCH_OBJ);
+
     include_once __DIR__ . '/../views/admin/manage-books.php';
 }
+
 
 public function showAddBookForm()
 {

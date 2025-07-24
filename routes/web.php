@@ -4,8 +4,8 @@ session_start();
 // Nạp Controller Admin
 require_once __DIR__ . '/../app/controllers/AdminController.php';
 
-// Lấy đường dẫn request
-$request = $_SERVER['REQUEST_URI'];
+// ✅ Fix: Chỉ lấy phần path, bỏ phần ?query để định tuyến chính xác
+$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Chỉ cho phép truy cập admin
 if (strpos($request, '/admin') === 0) {
@@ -84,6 +84,7 @@ if (strpos($request, '/admin') === 0) {
             $controller->manageCategories();
             break;
 
+        // 404 fallback
         default:
             http_response_code(404);
             include_once __DIR__ . '/../app/views/404.php';

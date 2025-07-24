@@ -2,6 +2,42 @@
 
 <div class="container mt-4">
     <h2 class="mb-4">Quản lý Sách</h2>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control"
+                   placeholder="Tìm tên sách..." value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
+        </div>
+
+        <div class="col-md-3">
+            <select name="tacgia_id" class="form-select">
+                <option value="">-- Lọc theo tác giả --</option>
+                <?php foreach ($authors as $author): ?>
+                    <option value="<?= $author['id'] ?>" 
+                        <?= isset($_GET['tacgia_id']) && $_GET['tacgia_id'] == $author['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($author['tentacgia']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select name="theloai_id" class="form-select">
+                <option value="">-- Lọc theo thể loại --</option>
+                <?php foreach ($genres as $genre): ?>
+                    <option value="<?= $genre['id'] ?>" 
+                        <?= isset($_GET['theloai_id']) && $_GET['theloai_id'] == $genre['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($genre['tentheloai']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+        </div>
+    </form>
+
     <a href="/admin/add-book" class="btn btn-success mb-3">+ Thêm Sách Mới</a>
 
     <?php if (isset($_SESSION['success'])): ?>
@@ -43,7 +79,7 @@
                 <?php endforeach; ?>
                 <?php if (empty($books)): ?>
                     <tr>
-                        <td colspan="8" class="text-center text-muted">Chưa có sách nào trong hệ thống.</td>
+                        <td colspan="8" class="text-center text-muted">Không tìm thấy sách nào phù hợp.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
