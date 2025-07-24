@@ -150,55 +150,6 @@ public function deleteBook($id)
     header('Location: /admin/manage-books');
     exit;
 }
-    /**
-     * Quản lý thành viên
-     */
-    public function manageMembers()
-    {
-        $members = Member::all();
-        include_once __DIR__ . '/../views/admin/manage-members.php';
-    }
 
-    /**
-     * Xử lý xóa thành viên
-     */
-    public function deleteMember()
-    {
-        if (isset($_GET['id'])) {
-            Member::delete(intval($_GET['id']));
-        }
-        header('Location: /admin/manage-members');
-        exit;
-    }
-
-    /**
-     * Quản lý phiếu mượn
-     */
-    public function manageBorrows()
-    {
-        $status  = $_GET['status'] ?? null;
-        $borrows = Borrow::getAll($status);
-        include_once __DIR__ . '/../views/admin/manage-borrows.php';
-    }
-
-    /**
-     * Hiển thị chi tiết phiếu mượn
-     */
-    public function showBorrowDetail($id)
-    {
-        $borrow  = Borrow::find($id);
-        $details = BorrowDetail::findByBorrow($id);
-        include_once __DIR__ . '/../views/admin/borrow-detail.php';
-    }
-
-    /**
-     * Xử lý xóa phiếu mượn
-     */
-    public function deleteBorrow($id)
-    {
-        Borrow::delete($id);
-        header('Location: /admin/manage-borrows');
-        exit;
-    }
 }
 ?>
